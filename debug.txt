@@ -1,0 +1,77 @@
+問題:
+/bin/bash: jar: command not found
+make: *** [out/host/common/obj/JAVA_LIBRARIES/apicheck_intermediates/javalib.jar] Error 127
+解決:
+這個錯誤是說編譯過程中找不到jar命令，解?辦法如下：
+cd /usr/bin
+必須先進入/usr/bin，下同
+sudo ln -s -f /usr/lib/jvm/java/jdk1.5.0_21/bin/jar
+我的jdk是安裝在/usr/lib/jvm/java/jdk1.5.0_21/目錄下的
+如果提示javah：commond not found，於是照葫蘆畫瓢，輸入命令
+cd /usr/bin
+ln -s -f /usr/lib/jvm/java/jdk1.5.0_21/bin/javah
+在編譯sdk時，如果提示javadoc：commond not found，
+cd /usr/bin
+ln -s -f /usr/lib/jvm/java/jdk1.5.0_21/bin/javadoc
+編譯的時間很長啊，我在編譯的時候是直接把這三個都添加了，以防萬一啊，添加完成之後，記得檢查一下，回到android的根目錄，執行 ls -l ja*
+root@ubuntu:/usr/bin# ls -l ja*
+lrwxrwxrwx 1 root root    37 May 23 22:52 jar -> /usr/lib/jvm/java/jdk1.5.0_21/bin/jar
+lrwxrwxrwx 1 root root    22 May 23 21:54 java -> /etc/alternatives/java
+lrwxrwxrwx 1 root root    23 May 23 22:44 javac -> /etc/alternatives/javac
+lrwxrwxrwx 1 root root    41 May 23 22:52 javadoc -> /usr/lib/jvm/java/jdk1.5.0_21/bin/javadoc
+lrwxrwxrwx 1 root root    39 May 23 22:52 javah -> /usr/lib/jvm/java/jdk1.5.0_21/bin/
+參考網址:
+http://webcache.googleusercontent.com/search?q=cache:SFzP_WKXUGsJ:rritw.com/a/caozuoxitong/Android/2013/0524/358530.html+&cd=2&hl=zh-TW&ct=clnk&gl=tw
+
+問題:
+“/usr/bin/ld: cannot find -lz”
+make: *** [out/host/linux-x86/obj/lib/libneo_cgi.so] Error 1
+解決:
+Installing lib32z1-dev got me past it. I have a 64 bit system and it seems like it wanted the 32 bit library
+參考網址:
+http://stackoverflow.com/questions/3373995/usr-bin-ld-cannot-find-lz
+http://blog.udn.com/DreamYeh/8597960
+
+
+Error:
+make: *** [out/host/linux-x86/obj/STATIC_LIBRARIES/libutils_intermediates/RefBase.o] Error 1
+Sol:
+修改文件 /frameworks/base/libs/utils/Android.mk
+修改以下語句
+LOCAL_CFLAGS += -DLIBUTILS_NATIVE=1 $(TOOL_CFLAGS)
+為
+LOCAL_CFLAGS += -DLIBUTILS_NATIVE=1 $(TOOL_CFLAGS) -fpermissive
+URL:
+http://weiwei.pixnet.net/blog/post/31481109-%E7%B7%A8%E8%AD%AFandroid-source-code-%E9%8C%AF%E8%AA%A4%E8%A7%A3%E6%B1%BA%E8%BE%A6%E6%B3%95
+
+Error:
+<command-line>:0:0: error: "_FORTIFY_SOURCE" redefined [-Werror]
+Sol:
+sudo apt-get install gcc-4.4
+sudo apt-get install g++-4.4
+sudo rm /usr/bin/gcc
+sudo rm /usr/bin/g++
+sudo ln -s /usr/bin/gcc-4.4 /usr/bin/gcc
+sudo ln -s /usr/bin/g++-4.4 /usr/bin/g++
+URL:
+http://blog.xuite.net/yang44/omap4460/60546559-%E5%9C%A8ubuntu12.04LTS+x86_64+%E5%BB%BA%E6%A7%8BAndroid+4.0.3+%E7%9A%84%E7%B7%A8%E8%AD%AF%E7%92%B0%E5%A2%83
+
+Error:
+make: *** [out/host/linux-x86/obj/EXECUTABLES/obbtool_intermediates/obbtool] Error 1
+URL:
+http://cheng-min-i-taiwan.blogspot.tw/2012/05/ubuntu-1204-64bit-android-ics.html
+
+
+Error:
+g++: selected multilib '32' not installed
+Sol:
+sudo apt-get install g++-4.4-multilib
+URL:
+http://blog.csdn.net/giegie/article/details/6944100
+
+Error:
+SDL init failure, reason is: No available video device
+Sol:
+sudo apt-get install libsdl1.2debian:i386
+URL:
+http://stackoverflow.com/questions/4841908/sdl-init-failure-reason-is-no-available-video-device
